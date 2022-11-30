@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 23
-  productGUID: bf6d05f3aa970ad4d8f1c08e5d087c1f
+  productGUID: 2c860599744bb4146985300a7d56c9b1
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: UnityProject1
+  productName: VIS_Project1
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -636,14 +636,14 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template3D
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Assets\WSATestCertificate.pfx
+  metroCertificatePath: C:\Users\m-sch\Documents\Projects\VIS_Project1\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00438647c41cda01
+  metroCertificateNotAfter: 80645e6a1b1fda01
   metroApplicationDescription: Template_3D
   wsaImages: {}
-  metroTileShortName: UnityProject1
+  metroTileShortName: VIS_Project1
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
