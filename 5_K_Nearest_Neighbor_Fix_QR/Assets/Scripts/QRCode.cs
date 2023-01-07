@@ -3,14 +3,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if WINDOWS_UWP
-
-using Windows.Perception.Spatial;
-
-#endif
 namespace QRTracking
 {
-    [RequireComponent(typeof(QRTracking.SpatialGraphCoordinateSystem))]
+    [RequireComponent(typeof(QRTracking.SpatialGraphNodeTracker))]
     public class QRCode : MonoBehaviour
     {
         public Microsoft.MixedReality.QR.QRCode qrCode;
@@ -19,12 +14,12 @@ namespace QRTracking
         public float PhysicalSize { get; private set; }
         public string CodeText { get; private set; }
 
-        private TextMesh QRID; //QR code ID for this session
-        private TextMesh QRNodeID; //spatialgraphnodeid of QR code to create coordinate system
-        private TextMesh QRText; //Decoded QR code data.
-        private TextMesh QRVersion; //Version of this QR code. Version 1-40 are regular QR codes and M1 to M4 are Micro QR code formats 1-4.
-        private TextMesh QRTimeStamp; //The last detected time.
-        private TextMesh QRSize; //Physical width and height of this QR code in meters.
+        private TextMesh QRID;
+        private TextMesh QRNodeID;
+        private TextMesh QRText;
+        private TextMesh QRVersion;
+        private TextMesh QRTimeStamp;
+        private TextMesh QRSize;
         private GameObject QRInfo;
         private bool validURI = false;
         private bool launch = false;

@@ -31,7 +31,7 @@ namespace QRTracking
     public class QRCodesManager : Singleton<QRCodesManager>
     {
         [Tooltip("Determines if the QR codes scanner should be automatically started.")]
-        public bool AutoStartQRTracking = false;
+        public bool AutoStartQRTracking = true;
 
         public bool IsTrackerRunning { get; private set; }
 
@@ -44,9 +44,9 @@ namespace QRTracking
 
         private System.Collections.Generic.SortedDictionary<System.Guid, Microsoft.MixedReality.QR.QRCode> qrCodesList = new SortedDictionary<System.Guid, Microsoft.MixedReality.QR.QRCode>();
 
-        private QRCodeWatcher qrTracker; //getting reference to QRCodeWatcher class
+        private QRCodeWatcher qrTracker;
         private bool capabilityInitialized = false;
-        private QRCodeWatcherAccessStatus accessStatus; //Request user consent before using QR code detection.
+        private QRCodeWatcherAccessStatus accessStatus;
         private System.Threading.Tasks.Task<QRCodeWatcherAccessStatus> capabilityTask;
 
         public System.Guid GetIdForQRCode(string qrCodeData)
@@ -76,35 +76,32 @@ namespace QRTracking
 
         }
 
-        // Use this for initialization - this is where it starts!
+        // Use this for initialization
         async protected virtual void Start()
         {
-            Debug.Log("In Start() of QRCodesManager");
-            IsSupported = QRCodeWatcher.IsSupported(); //Gets whether QR code detection is supported on the current device.
-            capabilityTask = QRCodeWatcher.RequestAccessAsync(); //Request user consent before using QR code detection.
+            IsSupported = QRCodeWatcher.IsSupported();
+            capabilityTask = QRCodeWatcher.RequestAccessAsync();
             accessStatus = await capabilityTask;
             capabilityInitialized = true;
         }
 
         private void SetupQRTracking()
         {
-            Debug.Log("Setup QRTracking()");
             try
             {
-                qrTracker = new QRCodeWatcher(); // get reference for QRCodeWatcher
-                IsTrackerRunning = false; // it's not running
-                qrTracker.Added += QRCodeWatcher_Added; //  Event representing the addition of a QR Code.
-                qrTracker.Updated += QRCodeWatcher_Updated; // Event representing the update of a QR Code.
-                qrTracker.Removed += QRCodeWatcher_Removed; // Event representing the removal of a QR Code.
-                qrTracker.EnumerationCompleted += QRCodeWatcher_EnumerationCompleted; // Event representing the 
-                //enumeration of QR Codes completing after a Start call.
+                qrTracker = new QRCodeWatcher();
+                IsTrackerRunning = false;
+                qrTracker.Added += QRCodeWatcher_Added;
+                qrTracker.Updated += QRCodeWatcher_Updated;
+                qrTracker.Removed += QRCodeWatcher_Removed;
+                qrTracker.EnumerationCompleted += QRCodeWatcher_EnumerationCompleted;
             }
             catch (Exception ex)
             {
                 Debug.Log("QRCodesManager : exception starting the tracker " + ex.ToString());
             }
 
-            if (AutoStartQRTracking) // if we automatically have set it to start tracking, then call StartQRTracking()
+            if (AutoStartQRTracking)
             {
                 StartQRTracking();
             }
@@ -112,14 +109,14 @@ namespace QRTracking
 
         public void StartQRTracking()
         {
-            if (qrTracker != null && !IsTrackerRunning) // only if QRCodeWatcher is not null and Tracker is not already running
+            if (qrTracker != null && !IsTrackerRunning)
             {
                 Debug.Log("QRCodesManager starting QRCodeWatcher");
                 try
                 {
-                    qrTracker.Start(); // Starts detecting QR codes.
-                    IsTrackerRunning = true; // change status of tracking to true
-                    QRCodesTrackingStateChanged?.Invoke(this, true); //check if status has changed
+                    qrTracker.Start();
+                    IsTrackerRunning = true;
+                    QRCodesTrackingStateChanged?.Invoke(this, true);
                 }
                 catch(Exception ex)
                 {
@@ -197,11 +194,11 @@ namespace QRTracking
         {
             Debug.Log("QRCodesManager QRCodeWatcher_Added");
 
-            lock (qrCodesList) // Any other thread is blocked from acquiring the lock and waits until the lock is released
+            lock (qrCodesList)
             {
-                qrCodesList[args.Code.Id] = args.Code; // add that unique QRcode ID to the list
+                qrCodesList[args.Code.Id] = args.Code;
             }
-            var handlers = QRCodeAdded; // update event handlers that something is added
+            var handlers = QRCodeAdded;
             if (handlers != null)
             {
                 handlers(this, QRCodeEventArgs.Create(args.Code));

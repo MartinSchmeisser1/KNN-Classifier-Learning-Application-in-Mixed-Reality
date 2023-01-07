@@ -16,8 +16,7 @@ namespace QRTracking
 
         private System.Collections.Generic.SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
         private bool clearExisting = false;
-
-        public PlotHolderScript plotHolderScript;
+        private PlotHolderScript plotHolderScript;
 
         struct ActionData
         {
@@ -109,10 +108,10 @@ namespace QRTracking
                     if (action.type == ActionData.Type.Added)
                     {
                         GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        qrCodeObject.GetComponent<SpatialGraphCoordinateSystem>().Id = action.qrCode.SpatialGraphNodeId;
+                        qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
                         qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
                         LatestQRCodeDetails.text = action.qrCode.Data; //updating to show in our QRCodePanel the data of latest QR code scanned
-                        plotHolderScript.addDataPoint(action.qrCode.Data); //add DataPoint dependent on action.qrCode.Data
+                        plotHolderScript.addDataPoint(action.qrCode.Data);
                         qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject); //QRcode added
                     }
                     else if (action.type == ActionData.Type.Updated)
@@ -120,7 +119,7 @@ namespace QRTracking
                         if (!qrCodesObjectsList.ContainsKey(action.qrCode.Id))
                         {
                             GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                            qrCodeObject.GetComponent<SpatialGraphCoordinateSystem>().Id = action.qrCode.SpatialGraphNodeId;
+                            qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
                             qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
                             qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
                         }
@@ -152,7 +151,6 @@ namespace QRTracking
         {
             HandleEvents();
         }
-
     }
 
 }
