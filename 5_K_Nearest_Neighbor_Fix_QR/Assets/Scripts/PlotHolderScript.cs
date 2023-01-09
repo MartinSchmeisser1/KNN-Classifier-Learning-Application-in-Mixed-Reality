@@ -80,18 +80,18 @@ public class PlotHolderScript : MonoBehaviour
 
         // TEST: Initialize DataPoints
 
-        ////var maleDatapoint1 = Instantiate(maleDatapointObject, new Vector3((float) 0.3, (float) 0.4, 2), Quaternion.identity);
-        ////maleDatapoint1.transform.parent = gameObject.transform;
+        var maleDatapoint1 = Instantiate(maleDatapointObject, new Vector3((float)0.3, (float)0.4, 2), Quaternion.identity);
+        maleDatapoint1.transform.parent = gameObject.transform;
 
-        ////var maleDatapoint2 = Instantiate(maleDatapointObject, new Vector3((float)0.3, (float)0.3, 2), Quaternion.identity);
-        ////maleDatapoint2.transform.parent = gameObject.transform;
+        var maleDatapoint2 = Instantiate(maleDatapointObject, new Vector3((float)0.3, (float)0.3, 2), Quaternion.identity);
+        maleDatapoint2.transform.parent = gameObject.transform;
 
 
-        ////var femaleDatapoint1 = Instantiate(femaleDatapointObject, new Vector3(0, (float)0.3, 2), Quaternion.identity);
-        ////femaleDatapoint1.transform.parent = gameObject.transform;
+        var femaleDatapoint1 = Instantiate(femaleDatapointObject, new Vector3(0, (float)0.3, 2), Quaternion.identity);
+        femaleDatapoint1.transform.parent = gameObject.transform;
 
-        ////var femaleDatapoint2 = Instantiate(femaleDatapointObject, new Vector3((float)-0.1, (float)0.2, 2), Quaternion.identity);
-        ////femaleDatapoint2.transform.parent = gameObject.transform;
+        var femaleDatapoint2 = Instantiate(femaleDatapointObject, new Vector3((float)-0.1, (float)0.2, 2), Quaternion.identity);
+        femaleDatapoint2.transform.parent = gameObject.transform;
 
         //var datapoint1 = Instantiate(maleDatapointObject, new Vector3((float)0.4, (float)0.4, 2), Quaternion.identity);
         //datapoint1.transform.parent = gameObject.transform;
