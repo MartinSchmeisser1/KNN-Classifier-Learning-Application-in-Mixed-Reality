@@ -1,0 +1,227 @@
+﻿
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace QRTracking
+{
+    public class QRCodesVisualizer : MonoBehaviour
+    {
+        public GameObject qrCodePrefab;
+
+        private SortedDictionary<System.Guid, GameObject> qrCodesObjectsList;
+        private Queue<ActionData> pendingActions = new Queue<ActionData>();
+        private bool clearExisting = false;
+
+        //public GameObject maleDatapointObject;
+        //public GameObject femaleDatapointObject;
+        //private List<GameObject> dataPointList;
+
+        public GameObject plotHolder;
+
+        struct ActionData
+        {
+            public enum Type
+            {
+                Added,
+                Updated,
+                Removed
+            };
+            public Type type;
+            public Microsoft.MixedReality.QR.QRCode qrCode;
+
+            public ActionData(Type type, Microsoft.MixedReality.QR.QRCode qRCode) : this()
+            {
+                this.type = type;
+                qrCode = qRCode;
+            }
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+            Debug.Log("QRCodesVisualizer start");
+            qrCodesObjectsList = new SortedDictionary<System.Guid, GameObject>();
+
+            QRCodesManager.Instance.QRCodesTrackingStateChanged += Instance_QRCodesTrackingStateChanged;
+            QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
+            QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
+            QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
+            if (qrCodePrefab == null)
+            {
+                throw new System.Exception("Prefab not assigned");
+            }
+
+
+
+        }
+        private void Instance_QRCodesTrackingStateChanged(object sender, bool status)
+        {
+            if (!status)
+            {
+                clearExisting = true;
+            }
+        }
+
+        private void Instance_QRCodeAdded(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
+        {
+            Debug.Log("QRCodesVisualizer Instance_QRCodeAdded");
+
+            lock (pendingActions)
+            {
+                pendingActions.Enqueue(new ActionData(ActionData.Type.Added, e.Data));
+            }
+        }
+
+        private void Instance_QRCodeUpdated(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
+        {
+            Debug.Log("QRCodesVisualizer Instance_QRCodeUpdated");
+
+            lock (pendingActions)
+            {
+                pendingActions.Enqueue(new ActionData(ActionData.Type.Updated, e.Data));
+            }
+        }
+
+        private void Instance_QRCodeRemoved(object sender, QRCodeEventArgs<Microsoft.MixedReality.QR.QRCode> e)
+        {
+            Debug.Log("QRCodesVisualizer Instance_QRCodeRemoved");
+
+            lock (pendingActions)
+            {
+                pendingActions.Enqueue(new ActionData(ActionData.Type.Removed, e.Data));
+            }
+        }
+
+        private void HandleEvents()
+        {
+            lock (pendingActions)
+            {
+                while (pendingActions.Count > 0)
+                {
+
+
+                    var action = pendingActions.Dequeue();
+                    Debug.Log($"QRCodesVisualizer HandleEvents: {action.type}");
+
+
+                    if (action.type == ActionData.Type.Added)
+                    {
+
+                        GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                        qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                        qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+
+                        // if (action.qrCode.LastDetectedTime.AddSeconds(20) > System.DateTimeOffset.Now)
+                        // {
+                            plotHolder.GetComponent<PlotHolderScript>().addDataPoint(action.qrCode.Data);
+                        // }
+
+
+                        qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                    }
+                    else if (action.type == ActionData.Type.Updated)
+                    {
+                        if (!qrCodesObjectsList.ContainsKey(action.qrCode.Id))
+                        {
+                            GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                            qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                            qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                            qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+
+
+                            // if (action.qrCode.LastDetectedTime.AddSeconds(20) > System.DateTimeOffset.Now)
+                            // {
+                            plotHolder.GetComponent<PlotHolderScript>().addDataPoint(action.qrCode.Data);
+                            // }  
+
+
+                        }
+                    }
+                    else if (action.type == ActionData.Type.Removed)
+                    {
+                        if (qrCodesObjectsList.ContainsKey(action.qrCode.Id))
+                        {
+                            Destroy(qrCodesObjectsList[action.qrCode.Id]);
+                            qrCodesObjectsList.Remove(action.qrCode.Id);
+                        }
+                    }
+                }
+            }
+            if (clearExisting)
+            {
+                clearExisting = false;
+                foreach (var obj in qrCodesObjectsList)
+                {
+                    Destroy(obj.Value);
+                }
+                qrCodesObjectsList.Clear();
+
+            }
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            QRCodesManager.Instance.QRCodeAdded += Instance_QRCodeAdded;
+            QRCodesManager.Instance.QRCodeUpdated += Instance_QRCodeUpdated;
+            QRCodesManager.Instance.QRCodeRemoved += Instance_QRCodeRemoved;
+
+            HandleEvents();
+        }
+
+        //public void addDataPoint(string qrCodeData)
+        //{
+        //    // Homer Simpson - 90kg - 1,80m
+        //    if (qrCodeData == "KNN Tutorial Card 1")
+        //    {
+        //        var datapoint = Instantiate(maleDatapointObject, new Vector3((float)0.4, (float)0.4, 2), Quaternion.identity);
+        //        datapoint.transform.parent = gameObject.transform;
+
+        //        dataPointList.Add(datapoint);
+
+        //    }
+
+        //    // Marge Simpson - 70kg - 1,70m
+        //    if (qrCodeData == "KNN Tutorial Card 2")
+        //    {
+        //        var datapoint = Instantiate(femaleDatapointObject, new Vector3((float)0.2, (float)0.35, 2), Quaternion.identity);
+        //        datapoint.transform.parent = gameObject.transform;
+
+        //        dataPointList.Add(datapoint);
+        //    }
+
+
+        //    // Rick Sanchez - 70kg - 1,90m
+        //    if (qrCodeData == "KNN Tutorial Card 3")
+        //    {
+        //        var datapoint = Instantiate(maleDatapointObject, new Vector3((float)0.2, (float)0.45, 2), Quaternion.identity);
+        //        datapoint.transform.parent = gameObject.transform;
+
+        //        dataPointList.Add(datapoint);
+        //    }
+
+
+        //    // Summer Smith - 70kg - 1,80m
+        //    if (qrCodeData == "KNN Tutorial Card 4")
+        //    {
+        //        var datapoint = Instantiate(femaleDatapointObject, new Vector3((float)0.2, (float)0.40, 2), Quaternion.identity);
+        //        datapoint.transform.parent = gameObject.transform;
+
+        //        dataPointList.Add(datapoint);
+        //    }
+
+
+
+
+        //    //if (qrCodeData == "KNN Reset")
+        //    //{
+        //    //    foreach (GameObject dataPoint in dataPointList)
+        //    //    {
+        //    //        Destroy(dataPoint);
+        //    //    }
+        //    //    dataPointList.Clear();
+        //    //}
+        //}
+    }
+
+}
