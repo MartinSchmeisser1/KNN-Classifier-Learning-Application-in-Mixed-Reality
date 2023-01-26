@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/QRCodesSample.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/MyScene.unity
+    guid: 8ab28fb3bff2ef34095fb966e0c9d008
+  m_configObjects:
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: cee32befc5b00be4997eb11dcc1bae86,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1847e263593cfc74da83c0fd98d32925,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 590f0c29a5d447e4aa5a94726c10a768,
+      type: 2}
