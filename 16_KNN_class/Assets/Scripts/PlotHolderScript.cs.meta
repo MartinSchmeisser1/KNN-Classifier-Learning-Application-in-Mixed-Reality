@@ -3,7 +3,20 @@ guid: 6bd5bd027bb8c29439fc722aeb8ad285
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - yAxisTickObject: {instanceID: 0}
+  - xAxisTickObject: {instanceID: 0}
+  - maleDatapointObject: {instanceID: 0}
+  - maleDatapointObjectRed: {instanceID: 0}
+  - maleDatapointObjectYellow: {instanceID: 0}
+  - femaleDatapointObject: {instanceID: 0}
+  - femaleDatapointObjectRed: {instanceID: 0}
+  - femaleDatapointObjectYellow: {instanceID: 0}
+  - unclassifiedDatapointObject: {instanceID: 0}
+  - blueMaterial: {fileID: 2100000, guid: b79a38df9f02404409e2fba53fad18b1, type: 2}
+  - rosaMaterial: {fileID: 2100000, guid: 77f8e5b1e3d004747bcdf7840694090a, type: 2}
+  - yellowMaterial: {fileID: 2100000, guid: 4ef0f32380c13a6408cf508362b3a60f, type: 2}
+  - redMaterial: {fileID: 2100000, guid: 96fae401f4dc6a4449c0e5b2a1d9a728, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

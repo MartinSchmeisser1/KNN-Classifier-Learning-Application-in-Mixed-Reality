@@ -3656,16 +3656,16 @@ MonoBehaviour:
     type: 3}
   maleDatapointObjectRed: {fileID: 7181222623913609001, guid: 0892d0f373e11fc45b193c9edfe755d5,
     type: 3}
-  maleDatapointObjectYellow: {fileID: 1373133320070747291, guid: b08ed8d4ff265f545af536b0e14852cb,
-    type: 3}
   femaleDatapointObject: {fileID: 9161537535498157793, guid: 1dca111aeacf98c41a1f31a98f77fb85,
     type: 3}
   femaleDatapointObjectRed: {fileID: 3589545340538149756, guid: 87b1c50325dfdb240909889f9fd0126f,
     type: 3}
-  femaleDatapointObjectYellow: {fileID: 2113629285614926696, guid: 2b28c2fdd78101441ade77be0a2edd94,
-    type: 3}
   unclassifiedDatapointObject: {fileID: 3038522617867328815, guid: caf23675d71fa5546b00404748db279c,
     type: 3}
+  blueMaterial: {fileID: 2100000, guid: b79a38df9f02404409e2fba53fad18b1, type: 2}
+  rosaMaterial: {fileID: 2100000, guid: 77f8e5b1e3d004747bcdf7840694090a, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: 4ef0f32380c13a6408cf508362b3a60f, type: 2}
+  redMaterial: {fileID: 2100000, guid: 96fae401f4dc6a4449c0e5b2a1d9a728, type: 2}
 --- !u!4 &891010391
 Transform:
   m_ObjectHideFlags: 0

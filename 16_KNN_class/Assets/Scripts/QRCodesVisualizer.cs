@@ -116,7 +116,7 @@ namespace QRTracking
 
                         if (action.qrCode.LastDetectedTime.AddSeconds(1).UtcDateTime > System.DateTimeOffset.Now.UtcDateTime)
                         {
-                            plotHolder.GetComponent<PlotHolderScript>().handleQrCode(action.qrCode.Data);
+                            plotHolder.GetComponent<PlotHolderScript>().HandleQrCode(action.qrCode.Data);
                             LatestQRCodeDetails.text = action.qrCode.Data;
                         }
 
@@ -134,7 +134,7 @@ namespace QRTracking
                          }
                         if (action.qrCode.LastDetectedTime.AddSeconds(1).UtcDateTime > System.DateTimeOffset.Now.UtcDateTime)
                         {
-                            plotHolder.GetComponent<PlotHolderScript>().handleQrCode(action.qrCode.Data);
+                            plotHolder.GetComponent<PlotHolderScript>().HandleQrCode(action.qrCode.Data);
                             LatestQRCodeDetails.text = action.qrCode.Data;
                         }
                     }
