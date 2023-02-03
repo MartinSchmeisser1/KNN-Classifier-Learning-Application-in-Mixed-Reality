@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3c492e1548614544e9827a3d20f5c238
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - maleDatapointObject: {fileID: 1810546905645806973, guid: b4d9f7f24303d064394a9f2aa5ded378,
+      type: 3}
+  - femaleDatapointObject: {fileID: 9161537535498157793, guid: 1dca111aeacf98c41a1f31a98f77fb85,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
