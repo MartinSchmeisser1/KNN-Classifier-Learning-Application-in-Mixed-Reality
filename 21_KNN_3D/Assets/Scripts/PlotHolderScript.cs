@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Unity.Plastic.Newtonsoft.Json;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +31,8 @@ public class PlotHolderScript : MonoBehaviour
 
     private DataPoint classifiedDataPoint = null;
 
+    private JObject jsonConfig;
+
 
 
     //Vector3 dataPointNormalScale = new Vector3((float)0.05, (float)0.05, (float)0.05);
@@ -35,6 +40,9 @@ public class PlotHolderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // read JSON
+        jsonConfig = JObject.Parse(File.ReadAllText(@"Assets\Config\card_configuration.json"));
+
         // Instantiate X-Axis objects
         float yCoordinate = (float)-0.4;
         while (yCoordinate < 0.5)
@@ -79,7 +87,6 @@ public class PlotHolderScript : MonoBehaviour
             }
             xCoordinate = xCoordinate + (float)0.1;
         }
-
     }
 
     // Update is called once per frame
@@ -147,22 +154,13 @@ public class PlotHolderScript : MonoBehaviour
         foreach (DataPoint dataPoint in dataPointsForClassification)
         {
             dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)) + (Mathf.Pow((dataPoint.Hairvolume - hairvolume), 2)));
-            Debug.Log("dataPoint.Distance = " + dataPoint.Distance);
         }
-
-        Debug.Log("dataPointsForClassification count = " + dataPointsForClassification.Count());
-
 
         // sort data points by distance
         List<DataPoint> dataPointsForClassificationSorted = dataPointsForClassification.OrderBy(o => o.Distance).ToList();
 
-        Debug.Log("dataPointsForClassificationSorted count = " + dataPointsForClassificationSorted.Count());
-
-
         // only consider k nearest data points
         List<DataPoint> dataPointsForClassificationSortedAndTrimmed = dataPointsForClassificationSorted.Take(k).ToList();
-
-        Debug.Log("dataPointsForClassificationSortedAndTrimmed count = " + dataPointsForClassificationSortedAndTrimmed.Count());
 
         // highlight datapoints that were used for classification
         foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
@@ -226,9 +224,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(1))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.4, (float)0.9, (float)0.02);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(1, 90, 180, 2, Gender.Male, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["hairvolume"];
+
+                HandleMaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(1);
             }
         }
@@ -238,9 +240,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(2))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.85, 1);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(2, 70, 170, 100, Gender.Female, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["hairvolume"];
+
+                HandleFemaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(2);
             }
         }
@@ -250,9 +256,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(3))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.95, (float)0.3);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(3, 70, 190, 30, Gender.Male, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["hairvolume"];
+
+                HandleMaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(3);
             }
         }
@@ -262,9 +272,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(4))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.9, (float)0.8);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 70, 180, 80, Gender.Female, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["hairvolume"];
+
+                HandleFemaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(4);
             }
         }
@@ -274,9 +288,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(5))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.85, (float)0.4);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 80, 170, 40, Gender.Male, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["hairvolume"];
+
+                HandleMaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(5);
             }
         }
@@ -286,9 +304,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(6))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.75, (float)0.7);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 60, 150, 70, Gender.Female, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["hairvolume"];
+
+                HandleFemaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(6);
             }
         }
@@ -298,9 +320,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(7))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.5, (float)0.9, (float)0.5);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 100, 180, 50, Gender.Male, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["hairvolume"];
+                
+                HandleMaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(7);
             }
         }
@@ -310,9 +336,13 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(8))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.15, (float)0.8, (float)0.70);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 65, 160, 70, Gender.Female, dataPointGameObject));
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["height"];
+                int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["hairvolume"];
+
+                HandleFemaleTutorialcardInternal(weight, height, hairvolume);
+
                 dataPointIdsAlreadyLoaded.Add(8);
             }
         }
@@ -320,82 +350,109 @@ public class PlotHolderScript : MonoBehaviour
         // Test Card 1 - k=1 - 80kg - 1,80m - 50%
         if (qrCodeData == "KNN 3D Test Card 1 1")
         {
-            Gender classifiedGender = Classify(1, 80, 180, 50);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard11"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard11"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard11"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard11"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 1 - k=2 - 80kg - 1,80m - 50%
         if (qrCodeData == "KNN 3D Test Card 1 2")
         {
-            Gender classifiedGender = Classify(2, 80, 180, 50);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard12"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard12"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard12"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard12"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 1 - k=3 - 80kg - 1,80m - 50%
         if (qrCodeData == "KNN 3D Test Card 1 3")
         {
-            Gender classifiedGender = Classify(3, 80, 180, 50);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard13"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard13"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard13"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard13"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 2 - k=1 - 60kg - 1,60m - 80%
         if (qrCodeData == "KNN 3D Test Card 2 1")
         {
-            Gender classifiedGender = Classify(1, 60, 160, 80);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard21"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard21"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard21"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard21"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 2 - k=2 - 60kg - 1,60m - 80%
         if (qrCodeData == "KNN 3D Test Card 2 2")
         {
-            Gender classifiedGender = Classify(2, 60, 160, 80);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard22"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard22"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard22"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard22"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 2 - k=3 - 60kg - 1,60m - 80%
         if (qrCodeData == "KNN 3D Test Card 2 3")
         {
-            Gender classifiedGender = Classify(3, 60, 160, 80);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard23"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard23"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard23"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard23"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 3 - k=1 - 100kg - 2m - 30%
         if (qrCodeData == "KNN 3D Test Card 3 1")
         {
-            Gender classifiedGender = Classify(1, 100, 200, 30);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard31"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard31"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard31"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard31"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 3 - k=2 - 100kg - 2m - 30%
         if (qrCodeData == "KNN 3D Test Card 3 2")
         {
-            Gender classifiedGender = Classify(2, 100, 200, 30);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard32"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard32"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard32"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard32"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Test Card 3 - k=3 - 100kg - 2m - 30%
         if (qrCodeData == "KNN 3D Test Card 3 3")
         {
-            Gender classifiedGender = Classify(3, 100, 200, 30);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard33"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard33"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard33"]["height"];
+            int hairvolume = (int)jsonConfig["testcards"]["testcard33"]["hairvolume"];
+
+            HandleTestcardInternal(k, weight, height, hairvolume);
         }
 
         // Reset Card
@@ -415,19 +472,45 @@ public class PlotHolderScript : MonoBehaviour
             }
         }
     }
+    private void HandleFemaleTutorialcardInternal(int weight, int height, int hairvolume)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+        double zPoisiton = (double)hairvolume / 100;
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, (float)zPoisiton);
+
+        GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
+        dataPointsForClassification.Add(new DataPoint(weight, height, hairvolume, Gender.Female, dataPointGameObject));
+    }
+
+    private void HandleMaleTutorialcardInternal(int weight, int height, int hairvolume)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+        double zPoisiton = (double)hairvolume / 100;
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, (float)zPoisiton);
+
+        GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+        dataPointsForClassification.Add(new DataPoint(weight, height, hairvolume, Gender.Male, dataPointGameObject));
+    }
+
+    private void HandleTestcardInternal(int k, int weight, int height, int hairvolume)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+        double zPoisiton = (double)hairvolume / 100;
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, (float)zPoisiton);
+
+        Gender classifiedGender = Classify(k, weight, height, hairvolume);
+        GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
+        classifiedDataPoint = new DataPoint(weight, height, hairvolume, classifiedGender, dataPointGameObject);
+    }
 
     public void TestFunctionForButton()
     {
-        //HandleQrCode("KNN 3D Tutorial Card 1");
-        //HandleQrCode("KNN 3D Tutorial Card 2");
-        //HandleQrCode("KNN 3D Tutorial Card 3");
-        //HandleQrCode("KNN 3D Tutorial Card 4");
-        //HandleQrCode("KNN 3D Tutorial Card 5");
-        //HandleQrCode("KNN 3D Tutorial Card 6");
-        //HandleQrCode("KNN 3D Tutorial Card 7");
-        //HandleQrCode("KNN 3D Tutorial Card 8");
-
-        //HandleQrCode("KNN 3D Test Card 1 1");
 
     }
 
