@@ -79,6 +79,7 @@ public class PlotHolderScript : MonoBehaviour
             }
             xCoordinate = xCoordinate + (float)0.1;
         }
+
     }
 
     // Update is called once per frame
@@ -124,7 +125,7 @@ public class PlotHolderScript : MonoBehaviour
     // - There is no good way to handle this 
     // Currently, the datapoint that was added first is considered when multiple points have the same distance
 
-    private Gender Classify(int k, int weight, int height)
+    private Gender Classify(int k, int weight, int height, int hairvolume)
     {
         // reset highlighted datapoints 
         ResetHighlightedDatapoints();
@@ -145,7 +146,7 @@ public class PlotHolderScript : MonoBehaviour
         // calculate distances to all other points
         foreach (DataPoint dataPoint in dataPointsForClassification)
         {
-            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)));
+            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)) + (Mathf.Pow((dataPoint.Hairvolume - hairvolume), 2)));
             Debug.Log("dataPoint.Distance = " + dataPoint.Distance);
         }
 
@@ -220,181 +221,181 @@ public class PlotHolderScript : MonoBehaviour
     // ---------------------------------- Handling QR Codes ----------------------------------
     public void HandleQrCode(string qrCodeData)
     {
-        // Homer Simpson - 90kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 1")
+        // Homer Simpson - 90kg - 1,80m - 2%
+        if (qrCodeData == "KNN 3D Tutorial Card 1")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(1))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.4, (float)0.9, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.4, (float)0.9, (float)0.02);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(1, 90, 180, Gender.Male, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(1, 90, 180, 2, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(1);
             }
         }
 
-        // Marge Simpson - 70kg - 1,70m
-        if (qrCodeData == "KNN Tutorial Card 2")
+        // Marge Simpson - 70kg - 1,70m - 100%
+        if (qrCodeData == "KNN 3D Tutorial Card 2")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(2))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.85, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.85, 1);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(2, 70, 170, Gender.Female, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(2, 70, 170, 100, Gender.Female, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(2);
             }
         }
 
-        // Rick Sanchez - 70kg - 1,90m
-        if (qrCodeData == "KNN Tutorial Card 3")
+        // Rick Sanchez - 70kg - 1,90m - 30%
+        if (qrCodeData == "KNN 3D Tutorial Card 3")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(3))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.95, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.95, (float)0.3);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(3, 70, 190, Gender.Male, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(3, 70, 190, 30, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(3);
             }
         }
 
-        // Summer Smith - 70kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 4")
+        // Summer Smith - 70kg - 1,80m- 80%
+        if (qrCodeData == "KNN 3D Tutorial Card 4")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(4))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.9, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.9, (float)0.8);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 70, 180, Gender.Female, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(4, 70, 180, 80, Gender.Female, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(4);
             }
         }
 
-        // Randy Marsh - 80kg - 1,70m
-        if (qrCodeData == "KNN Tutorial Card 5")
+        // Randy Marsh - 80kg - 1,70m - 40%
+        if (qrCodeData == "KNN 3D Tutorial Card 5")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(5))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.85, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 80, 170, Gender.Female, dataPointGameObject));
+                Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.85, (float)0.4);
+                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+                dataPointsForClassification.Add(new DataPoint(4, 80, 170, 40, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(5);
             }
         }
 
-        // Liane Cartman - 60kg - 1,50m
-        if (qrCodeData == "KNN Tutorial Card 6")
+        // Liane Cartman - 60kg - 1,50m - 70%
+        if (qrCodeData == "KNN 3D Tutorial Card 6")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(6))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.75, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.75, (float)0.7);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 60, 150, Gender.Female, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(4, 60, 150, 70, Gender.Female, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(6);
             }
         }
 
-        // Peter Griffin - 100kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 7")
+        // Peter Griffin - 100kg - 1,80m - 50%
+        if (qrCodeData == "KNN 3D Tutorial Card 7")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(7))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.5, (float)0.9, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 100, 180, Gender.Female, dataPointGameObject));
+                Vector3 dataPointNormalPosition = new Vector3((float)0.5, (float)0.9, (float)0.5);
+                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+                dataPointsForClassification.Add(new DataPoint(4, 100, 180, 50, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(7);
             }
         }
 
-        // Lois Griffin - 65kg - 1,60m
-        if (qrCodeData == "KNN Tutorial Card 8")
+        // Lois Griffin - 65kg - 1,60m - 70%
+        if (qrCodeData == "KNN 3D Tutorial Card 8")
         {
             if (!dataPointIdsAlreadyLoaded.Contains(8))
             {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.15, (float)0.8, 0);
+                Vector3 dataPointNormalPosition = new Vector3((float)0.15, (float)0.8, (float)0.70);
                 GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 65, 160, Gender.Female, dataPointGameObject));
+                dataPointsForClassification.Add(new DataPoint(4, 65, 160, 70, Gender.Female, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(8);
             }
         }
 
-        // Test Card 1 - k=1 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 1")
+        // Test Card 1 - k=1 - 80kg - 1,80m - 50%
+        if (qrCodeData == "KNN 3D Test Card 1 1")
         {
-            Gender classifiedGender = Classify(1, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
+            Gender classifiedGender = Classify(1, 80, 180, 50);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 1 - k=2 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 2")
+        // Test Card 1 - k=2 - 80kg - 1,80m - 50%
+        if (qrCodeData == "KNN 3D Test Card 1 2")
         {
-            Gender classifiedGender = Classify(2, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
+            Gender classifiedGender = Classify(2, 80, 180, 50);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 1 - k=3 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 3")
+        // Test Card 1 - k=3 - 80kg - 1,80m - 50%
+        if (qrCodeData == "KNN 3D Test Card 1 3")
         {
-            Gender classifiedGender = Classify(3, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
+            Gender classifiedGender = Classify(3, 80, 180, 50);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, (float)0.5);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 80, 180, 50, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 2 - k=1 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 1")
+        // Test Card 2 - k=1 - 60kg - 1,60m - 80%
+        if (qrCodeData == "KNN 3D Test Card 2 1")
         {
-            Gender classifiedGender = Classify(1, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
+            Gender classifiedGender = Classify(1, 60, 160, 80);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 2 - k=2 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 2")
+        // Test Card 2 - k=2 - 60kg - 1,60m - 80%
+        if (qrCodeData == "KNN 3D Test Card 2 2")
         {
-            Gender classifiedGender = Classify(2, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
+            Gender classifiedGender = Classify(2, 60, 160, 80);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 2 - k=3 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 3")
+        // Test Card 2 - k=3 - 60kg - 1,60m - 80%
+        if (qrCodeData == "KNN 3D Test Card 2 3")
         {
-            Gender classifiedGender = Classify(3, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
+            Gender classifiedGender = Classify(3, 60, 160, 80);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, (float)0.8);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 60, 160, 80, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 3 - k=1 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 1")
+        // Test Card 3 - k=1 - 100kg - 2m - 30%
+        if (qrCodeData == "KNN 3D Test Card 3 1")
         {
-            Gender classifiedGender = Classify(1, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
+            Gender classifiedGender = Classify(1, 100, 200, 30);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 3 - k=2 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 2")
+        // Test Card 3 - k=2 - 100kg - 2m - 30%
+        if (qrCodeData == "KNN 3D Test Card 3 2")
         {
-            Gender classifiedGender = Classify(2, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
+            Gender classifiedGender = Classify(2, 100, 200, 30);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
         }
 
-        // Test Card 3 - k=3 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 3")
+        // Test Card 3 - k=3 - 100kg - 2m - 30%
+        if (qrCodeData == "KNN 3D Test Card 3 3")
         {
-            Gender classifiedGender = Classify(3, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
+            Gender classifiedGender = Classify(3, 100, 200, 30);
+            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, (float)0.3);
             GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
+            classifiedDataPoint = new DataPoint(1, 100, 200, 30, classifiedGender, dataPointGameObject);
         }
 
         // Reset Card
@@ -417,12 +418,16 @@ public class PlotHolderScript : MonoBehaviour
 
     public void TestFunctionForButton()
     {
-        //HandleQrCode("KNN Tutorial Card 1");
-        //HandleQrCode("KNN Tutorial Card 2");
-        //HandleQrCode("KNN Tutorial Card 3");
-        //HandleQrCode("KNN Tutorial Card 4");
+        //HandleQrCode("KNN 3D Tutorial Card 1");
+        //HandleQrCode("KNN 3D Tutorial Card 2");
+        //HandleQrCode("KNN 3D Tutorial Card 3");
+        //HandleQrCode("KNN 3D Tutorial Card 4");
+        //HandleQrCode("KNN 3D Tutorial Card 5");
+        //HandleQrCode("KNN 3D Tutorial Card 6");
+        //HandleQrCode("KNN 3D Tutorial Card 7");
+        //HandleQrCode("KNN 3D Tutorial Card 8");
 
-        //HandleQrCode("KNN Test Card 1 2");
+        //HandleQrCode("KNN 3D Test Card 1 1");
 
     }
 

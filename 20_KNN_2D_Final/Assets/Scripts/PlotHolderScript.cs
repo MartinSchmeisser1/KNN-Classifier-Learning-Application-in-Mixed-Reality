@@ -54,8 +54,7 @@ public class PlotHolderScript : MonoBehaviour
         }
 
 
-        //Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Far", "This is an example of a large dialog with only one button, placed at far interaction range", false);
-    }
+     }
 
     // Update is called once per frame
     void Update()
@@ -250,8 +249,8 @@ public class PlotHolderScript : MonoBehaviour
             if (!dataPointIdsAlreadyLoaded.Contains(5))
             {
                 Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.85, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 80, 170, Gender.Female, dataPointGameObject));
+                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+                dataPointsForClassification.Add(new DataPoint(4, 80, 170, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(5);
             }
         }
@@ -274,8 +273,8 @@ public class PlotHolderScript : MonoBehaviour
             if (!dataPointIdsAlreadyLoaded.Contains(7))
             {
                 Vector3 dataPointNormalPosition = new Vector3((float)0.5, (float)0.9, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 100, 180, Gender.Female, dataPointGameObject));
+                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+                dataPointsForClassification.Add(new DataPoint(4, 100, 180, Gender.Male, dataPointGameObject));
                 dataPointIdsAlreadyLoaded.Add(7);
             }
         }
