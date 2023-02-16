@@ -162,6 +162,8 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: -7175737974664107165, guid: 1847e263593cfc74da83c0fd98d32925, type: 2}
+  - {fileID: 6850338159707286961, guid: 590f0c29a5d447e4aa5a94726c10a768, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -737,7 +739,7 @@ PlayerSettings:
     WSA: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: SampleQRCodes
+  metroPackageName: KNNTutorial2D
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 

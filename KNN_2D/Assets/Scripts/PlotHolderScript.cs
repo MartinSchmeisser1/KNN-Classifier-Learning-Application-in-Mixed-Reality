@@ -1,14 +1,9 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 
 public class PlotHolderScript : MonoBehaviour
 {
-    public GameObject yAxisTickObject;
-    public GameObject xAxisTickObject;
-
     public GameObject maleDatapointObject;
     public GameObject maleDatapointObjectRed;
     public GameObject femaleDatapointObject;
@@ -25,16 +20,6 @@ public class PlotHolderScript : MonoBehaviour
 
     private DataPoint classifiedDataPoint = null;
 
-    private JObject jsonConfig;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // read JSON
-        jsonConfig = JObject.Parse(File.ReadAllText(@"Assets\Config\card_configuration.json"));
-    }
-
     public void HandleQrCode(string qrCodeData)
     {
         // Homer Simpson - 90kg - 1,80m
@@ -42,11 +27,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(1))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["height"];
-
-                HandleMaleTutorialcardInternal(weight, height);
+                HandleMaleTutorialcardInternal(90, 180);
 
                 dataPointIdsAlreadyLoaded.Add(1);
             }
@@ -57,11 +38,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(2))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["height"];
-
-                HandleFemaleTutorialcardInternal(weight, height);
+                HandleFemaleTutorialcardInternal(70, 170);
 
                 dataPointIdsAlreadyLoaded.Add(2);
             }
@@ -72,11 +49,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(3))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["height"];
-
-                HandleMaleTutorialcardInternal(weight, height);
+                HandleMaleTutorialcardInternal(70, 190);
 
                 dataPointIdsAlreadyLoaded.Add(3);
             }
@@ -87,11 +60,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(4))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["height"];
-
-                HandleFemaleTutorialcardInternal(weight, height);
+                HandleFemaleTutorialcardInternal(70, 180);
 
                 dataPointIdsAlreadyLoaded.Add(4);
             }
@@ -102,11 +71,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(5))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["height"];
-
-                HandleMaleTutorialcardInternal(weight, height);
+                HandleMaleTutorialcardInternal(80, 170);
 
                 dataPointIdsAlreadyLoaded.Add(5);
             }
@@ -117,11 +82,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(6))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["height"];
-
-                HandleFemaleTutorialcardInternal(weight, height);
+                HandleFemaleTutorialcardInternal(60, 150);
 
                 dataPointIdsAlreadyLoaded.Add(6);
             }
@@ -132,11 +93,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(7))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["height"];
-
-                HandleMaleTutorialcardInternal(weight, height);
+                HandleMaleTutorialcardInternal(100, 180);
 
                 dataPointIdsAlreadyLoaded.Add(7);
             }
@@ -147,11 +104,7 @@ public class PlotHolderScript : MonoBehaviour
         {
             if (!dataPointIdsAlreadyLoaded.Contains(8))
             {
-                // load card information from JSON
-                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["weight"];
-                int height = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["height"];
-
-                HandleFemaleTutorialcardInternal(weight, height);
+                HandleFemaleTutorialcardInternal(65, 160);
 
                 dataPointIdsAlreadyLoaded.Add(8);
             }
@@ -160,100 +113,55 @@ public class PlotHolderScript : MonoBehaviour
         // Test Card 1 - k=1 - 80kg - 1,80m
         if (qrCodeData == "KNN Test Card 1 1")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard11"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard11"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard11"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(1, 80, 180);
         }
 
         // Test Card 1 - k=2 - 80kg - 1,80m
         if (qrCodeData == "KNN Test Card 1 2")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard12"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard12"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard12"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(2, 80, 180);
         }
 
         // Test Card 1 - k=3 - 80kg - 1,80m
         if (qrCodeData == "KNN Test Card 1 3")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard13"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard13"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard13"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(3, 80, 180);
         }
 
         // Test Card 2 - k=1 - 60kg - 1,60m
         if (qrCodeData == "KNN Test Card 2 1")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard21"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard21"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard21"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(1, 60, 160);
         }
 
         // Test Card 2 - k=2 - 60kg - 1,60m
         if (qrCodeData == "KNN Test Card 2 2")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard22"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard22"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard22"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(2, 60, 160);
         }
 
         // Test Card 2 - k=3 - 60kg - 1,60m
         if (qrCodeData == "KNN Test Card 2 3")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard23"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard23"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard23"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(3, 60, 160);
         }
 
         // Test Card 3 - k=1 - 100kg - 2m
         if (qrCodeData == "KNN Test Card 3 1")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard31"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard31"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard31"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(1, 100, 200);
         }
 
         // Test Card 3 - k=2 - 100kg - 2m
         if (qrCodeData == "KNN Test Card 3 2")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard32"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard32"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard32"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(2, 100, 200);
         }
 
         // Test Card 3 - k=3 - 100kg - 2m
         if (qrCodeData == "KNN Test Card 3 3")
         {
-            // load card information from JSON
-            int k = (int)jsonConfig["testcards"]["testcard33"]["k"];
-            int weight = (int)jsonConfig["testcards"]["testcard33"]["weight"];
-            int height = (int)jsonConfig["testcards"]["testcard33"]["height"];
-
-            HandleTestcardInternal(k, weight, height);
+            HandleTestcardInternal(3, 100, 200);
         }
 
         // Reset Card
@@ -368,7 +276,7 @@ public class PlotHolderScript : MonoBehaviour
         // calculate distances to all other points
         foreach (DataPoint dataPoint in dataPointsForClassification)
         {
-            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)));
+            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow(((dataPoint.Height - height)/2), 2)));
         }
 
         // sort data points by distance
