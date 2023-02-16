@@ -1,8 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.Plastic.Newtonsoft.Json;
 using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlotHolderScript : MonoBehaviour
 {
@@ -12,8 +15,10 @@ public class PlotHolderScript : MonoBehaviour
 
     public GameObject maleDatapointObject;
     public GameObject maleDatapointObjectRed;
+    // public GameObject maleDatapointObjectYellow;
     public GameObject femaleDatapointObject;
     public GameObject femaleDatapointObjectRed;
+    // public GameObject femaleDatapointObjectYellow;
     public GameObject unclassifiedDatapointObject;
 
     public Material blueMaterial;
@@ -27,6 +32,10 @@ public class PlotHolderScript : MonoBehaviour
     private DataPoint classifiedDataPoint = null;
 
     private JObject jsonConfig;
+
+
+
+    //Vector3 dataPointNormalScale = new Vector3((float)0.05, (float)0.05, (float)0.05);
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +89,134 @@ public class PlotHolderScript : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+
+    private GameObject CreateGameObjectForDataPoint(Vector3 dataPointNormalPosition, GameObject dataPointGameObject)
+    {
+        // Consider plot scaling on the normal DataPoint position
+        Vector3 plotLocalScale = gameObject.transform.localScale;
+        Vector3 dataPointNormalPositionScaled = Vector3.Scale(dataPointNormalPosition, plotLocalScale);
+
+        // Add plot position to DataPoint position
+        Vector3 plotPosition = gameObject.transform.position;
+        Vector3 dataPointPosition = dataPointNormalPositionScaled + plotPosition;
+
+        // Instantiate DataPoint
+        var datapointInstance = Instantiate(dataPointGameObject, dataPointPosition, gameObject.transform.rotation, gameObject.transform);
+
+        return datapointInstance;
+    }
+
+    private GameObject AddClassifiedDatapoint(Gender classifiedGender, Vector3 dataPointNormalPosition)
+    {
+        if (classifiedGender == Gender.Male)
+        {
+            return CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObjectRed);
+        }
+        else if (classifiedGender == Gender.Female)
+        {
+            return CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObjectRed);
+        }
+        else
+        {
+            return CreateGameObjectForDataPoint(dataPointNormalPosition, unclassifiedDatapointObject);
+        }
+    }
+
+    // TODO: edge case: multiple neighbors in same distance?
+    // - There is no good way to handle this 
+    // Currently, the datapoint that was added first is considered when multiple points have the same distance
+
+    private Gender Classify(int k, int weight, int height, int hairvolume)
+    {
+        // reset highlighted datapoints 
+        ResetHighlightedDatapoints();
+
+        // delete last classified datapoint
+        if (classifiedDataPoint != null)
+        {
+            Destroy(classifiedDataPoint.GameObject);
+            classifiedDataPoint = null;
+        }
+
+        // if no data point was created yet return unclassifed
+        if (!dataPointsForClassification.Any())
+        {
+            return Gender.Unclassified;
+        }
+
+        // calculate distances to all other points
+        foreach (DataPoint dataPoint in dataPointsForClassification)
+        {
+            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)) + (Mathf.Pow((dataPoint.Hairvolume - hairvolume), 2)));
+        }
+
+        // sort data points by distance
+        List<DataPoint> dataPointsForClassificationSorted = dataPointsForClassification.OrderBy(o => o.Distance).ToList();
+
+        // only consider k nearest data points
+        List<DataPoint> dataPointsForClassificationSortedAndTrimmed = dataPointsForClassificationSorted.Take(k).ToList();
+
+        // highlight datapoints that were used for classification
+        foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
+        {
+            // change material of gameobject
+            dataPoint.GameObject.GetComponent<MeshRenderer>().material = yellowMaterial;
+        }
+
+        // count male/female points
+        int maleCounter = 0;
+        int femaleCounter = 0;
+        foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
+        {
+            if (dataPoint.Gender == Gender.Male)
+            {
+                maleCounter++;
+            }
+            if (dataPoint.Gender == Gender.Female)
+            {
+                femaleCounter++;
+            }
+        }
+
+        // return classified gender
+        if (femaleCounter > maleCounter)
+        {
+            return Gender.Female;
+        }
+        else if (maleCounter > femaleCounter)
+        {
+            return Gender.Male;
+        }
+        else
+        {
+            return Gender.Unclassified;
+        }
+    }
+
+    private void ResetHighlightedDatapoints()
+    {
+        foreach (DataPoint dataPoint in dataPointsForClassification)
+        {
+            // change material of gameobject
+            if (dataPoint.Gender == Gender.Male)
+            {
+                dataPoint.GameObject.GetComponent<MeshRenderer>().material = blueMaterial;
+            }
+            if (dataPoint.Gender == Gender.Female)
+            {
+                dataPoint.GameObject.GetComponent<MeshRenderer>().material = pinkMaterial;
+            }
+        }
+    }
+
+
+    // ---------------------------------- Handling QR Codes ----------------------------------
     public void HandleQrCode(string qrCodeData)
     {
         // Homer Simpson - 90kg - 1,80m - 2%
@@ -187,7 +324,7 @@ public class PlotHolderScript : MonoBehaviour
                 int weight = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["weight"];
                 int height = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["height"];
                 int hairvolume = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["hairvolume"];
-
+                
                 HandleMaleTutorialcardInternal(weight, height, hairvolume);
 
                 dataPointIdsAlreadyLoaded.Add(7);
@@ -372,123 +509,15 @@ public class PlotHolderScript : MonoBehaviour
         classifiedDataPoint = new DataPoint(weight, height, hairvolume, classifiedGender, dataPointGameObject);
     }
 
-    private GameObject CreateGameObjectForDataPoint(Vector3 dataPointNormalPosition, GameObject dataPointGameObject)
+    public void TestFunctionForButton()
     {
-        // Consider plot scaling on the normal DataPoint position
-        Vector3 plotLocalScale = gameObject.transform.localScale;
-        Vector3 dataPointNormalPositionScaled = Vector3.Scale(dataPointNormalPosition, plotLocalScale);
 
-        // Add plot position to DataPoint position
-        Vector3 plotPosition = gameObject.transform.position;
-        Vector3 dataPointPosition = dataPointNormalPositionScaled + plotPosition;
-
-        // Instantiate DataPoint
-        var datapointInstance = Instantiate(dataPointGameObject, dataPointPosition, gameObject.transform.rotation, gameObject.transform);
-
-        return datapointInstance;
     }
 
-    private GameObject AddClassifiedDatapoint(Gender classifiedGender, Vector3 dataPointNormalPosition)
+
+    public void TestFunctionForButton2()
     {
-        if (classifiedGender == Gender.Male)
-        {
-            return CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObjectRed);
-        }
-        else if (classifiedGender == Gender.Female)
-        {
-            return CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObjectRed);
-        }
-        else
-        {
-            return CreateGameObjectForDataPoint(dataPointNormalPosition, unclassifiedDatapointObject);
-        }
-    }
 
-    // Edge case: multiple neighbors in same distance?
-    // There is no good way to handle this. 
-    // Currently, the datapoint that was added first is considered when multiple points have the same distance.
-    // I think this is a fair way to handle this.
-
-    private Gender Classify(int k, int weight, int height, int hairvolume)
-    {
-        // reset highlighted datapoints 
-        ResetHighlightedDatapoints();
-
-        // delete last classified datapoint
-        if (classifiedDataPoint != null)
-        {
-            Destroy(classifiedDataPoint.GameObject);
-            classifiedDataPoint = null;
-        }
-
-        // if no data point was created yet return unclassifed
-        if (!dataPointsForClassification.Any())
-        {
-            return Gender.Unclassified;
-        }
-
-        // calculate distances to all other points
-        foreach (DataPoint dataPoint in dataPointsForClassification)
-        {
-            dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)) + (Mathf.Pow((dataPoint.Hairvolume - hairvolume), 2)));
-        }
-
-        // sort data points by distance
-        List<DataPoint> dataPointsForClassificationSorted = dataPointsForClassification.OrderBy(o => o.Distance).ToList();
-
-        // only consider k nearest data points
-        List<DataPoint> dataPointsForClassificationSortedAndTrimmed = dataPointsForClassificationSorted.Take(k).ToList();
-
-        // highlight datapoints that were used for classification
-        foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
-        {
-            // change material of gameobject
-            dataPoint.GameObject.GetComponent<MeshRenderer>().material = yellowMaterial;
-        }
-
-        // count male/female points
-        int maleCounter = 0;
-        int femaleCounter = 0;
-        foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
-        {
-            if (dataPoint.Gender == Gender.Male)
-            {
-                maleCounter++;
-            }
-            if (dataPoint.Gender == Gender.Female)
-            {
-                femaleCounter++;
-            }
-        }
-
-        // return classified gender
-        if (femaleCounter > maleCounter)
-        {
-            return Gender.Female;
-        }
-        else if (maleCounter > femaleCounter)
-        {
-            return Gender.Male;
-        }
-        else
-        {
-            return Gender.Unclassified;
-        }
-    }
-
-    private void ResetHighlightedDatapoints()
-    {
-        foreach (DataPoint dataPoint in dataPointsForClassification)
-        {
-            // change material of gameobject
-            if (dataPoint.Gender == Gender.Male)
-            {
-                dataPoint.GameObject.GetComponent<MeshRenderer>().material = blueMaterial;
-            }
-            if (dataPoint.Gender == Gender.Female)
-            {
-                dataPoint.GameObject.GetComponent<MeshRenderer>().material = pinkMaterial;
-            }
-        }
+        //HandleQrCode("KNN Test Card 2 3");
     }
 }

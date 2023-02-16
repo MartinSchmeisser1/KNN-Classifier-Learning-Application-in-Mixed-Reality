@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlotHolderScript : MonoBehaviour
 {
@@ -11,10 +11,8 @@ public class PlotHolderScript : MonoBehaviour
 
     public GameObject maleDatapointObject;
     public GameObject maleDatapointObjectRed;
-    // public GameObject maleDatapointObjectYellow;
     public GameObject femaleDatapointObject;
     public GameObject femaleDatapointObjectRed;
-    // public GameObject femaleDatapointObjectYellow;
     public GameObject unclassifiedDatapointObject;
 
     public Material blueMaterial;
@@ -27,41 +25,290 @@ public class PlotHolderScript : MonoBehaviour
 
     private DataPoint classifiedDataPoint = null;
 
+    private JObject jsonConfig;
 
-
-    //Vector3 dataPointNormalScale = new Vector3((float)0.05, (float)0.05, (float)0.05);
 
     // Start is called before the first frame update
     void Start()
     {
-
-        // initialize y-axis-ticks
-        double tmpCoordinate = -0.4;
-        while (tmpCoordinate < 0.5)
-        {
-            var tick = Instantiate(yAxisTickObject, new Vector3((float)-0.5, (float)tmpCoordinate, 2), Quaternion.identity);
-            tick.transform.parent = gameObject.transform;
-            tmpCoordinate = tmpCoordinate + 0.1;
-        }
-
-        // initialize x-axis-ticks
-        tmpCoordinate = -0.4;
-        while (tmpCoordinate < 0.5)
-        {
-            var tick = Instantiate(xAxisTickObject, new Vector3((float)tmpCoordinate, (float)-0.5, 2), Quaternion.identity);
-            tick.transform.parent = gameObject.transform;
-            tmpCoordinate = tmpCoordinate + 0.1;
-        }
-
-
-     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        // read JSON
+        jsonConfig = JObject.Parse(File.ReadAllText(@"Assets\Config\card_configuration.json"));
     }
 
+    public void HandleQrCode(string qrCodeData)
+    {
+        // Homer Simpson - 90kg - 1,80m
+        if (qrCodeData == "KNN Tutorial Card 1")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(1))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard1"]["height"];
+
+                HandleMaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(1);
+            }
+        }
+
+        // Marge Simpson - 70kg - 1,70m
+        if (qrCodeData == "KNN Tutorial Card 2")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(2))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard2"]["height"];
+
+                HandleFemaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(2);
+            }
+        }
+
+        // Rick Sanchez - 70kg - 1,90m
+        if (qrCodeData == "KNN Tutorial Card 3")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(3))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard3"]["height"];
+
+                HandleMaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(3);
+            }
+        }
+
+        // Summer Smith - 70kg - 1,80m
+        if (qrCodeData == "KNN Tutorial Card 4")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(4))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard4"]["height"];
+
+                HandleFemaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(4);
+            }
+        }
+
+        // Randy Marsh - 80kg - 1,70m
+        if (qrCodeData == "KNN Tutorial Card 5")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(5))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard5"]["height"];
+
+                HandleMaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(5);
+            }
+        }
+
+        // Liane Cartman - 60kg - 1,50m
+        if (qrCodeData == "KNN Tutorial Card 6")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(6))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard6"]["height"];
+
+                HandleFemaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(6);
+            }
+        }
+
+        // Peter Griffin - 100kg - 1,80m
+        if (qrCodeData == "KNN Tutorial Card 7")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(7))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard7"]["height"];
+
+                HandleMaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(7);
+            }
+        }
+
+        // Lois Griffin - 65kg - 1,60m
+        if (qrCodeData == "KNN Tutorial Card 8")
+        {
+            if (!dataPointIdsAlreadyLoaded.Contains(8))
+            {
+                // load card information from JSON
+                int weight = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["weight"];
+                int height = (int)jsonConfig["tutorialcards"]["tutorialcard8"]["height"];
+
+                HandleFemaleTutorialcardInternal(weight, height);
+
+                dataPointIdsAlreadyLoaded.Add(8);
+            }
+        }
+
+        // Test Card 1 - k=1 - 80kg - 1,80m
+        if (qrCodeData == "KNN Test Card 1 1")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard11"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard11"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard11"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 1 - k=2 - 80kg - 1,80m
+        if (qrCodeData == "KNN Test Card 1 2")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard12"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard12"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard12"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 1 - k=3 - 80kg - 1,80m
+        if (qrCodeData == "KNN Test Card 1 3")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard13"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard13"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard13"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 2 - k=1 - 60kg - 1,60m
+        if (qrCodeData == "KNN Test Card 2 1")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard21"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard21"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard21"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 2 - k=2 - 60kg - 1,60m
+        if (qrCodeData == "KNN Test Card 2 2")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard22"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard22"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard22"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 2 - k=3 - 60kg - 1,60m
+        if (qrCodeData == "KNN Test Card 2 3")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard23"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard23"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard23"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 3 - k=1 - 100kg - 2m
+        if (qrCodeData == "KNN Test Card 3 1")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard31"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard31"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard31"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 3 - k=2 - 100kg - 2m
+        if (qrCodeData == "KNN Test Card 3 2")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard32"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard32"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard32"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Test Card 3 - k=3 - 100kg - 2m
+        if (qrCodeData == "KNN Test Card 3 3")
+        {
+            // load card information from JSON
+            int k = (int)jsonConfig["testcards"]["testcard33"]["k"];
+            int weight = (int)jsonConfig["testcards"]["testcard33"]["weight"];
+            int height = (int)jsonConfig["testcards"]["testcard33"]["height"];
+
+            HandleTestcardInternal(k, weight, height);
+        }
+
+        // Reset Card
+        if (qrCodeData == "KNN Reset")
+        {
+            foreach (DataPoint dataPoint in dataPointsForClassification)
+            {
+                Destroy(dataPoint.GameObject);
+            }
+            dataPointsForClassification.Clear();
+            dataPointIdsAlreadyLoaded.Clear();
+
+            if (classifiedDataPoint != null)
+            {
+                Destroy(classifiedDataPoint.GameObject);
+                classifiedDataPoint = null;
+            }
+        }
+    }
+    private void HandleFemaleTutorialcardInternal(int weight, int height)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, 0);
+
+        GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
+        dataPointsForClassification.Add(new DataPoint(weight, height, Gender.Female, dataPointGameObject));
+    }
+
+    private void HandleMaleTutorialcardInternal(int weight, int height)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, 0);
+
+        GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
+        dataPointsForClassification.Add(new DataPoint(weight, height, Gender.Male, dataPointGameObject));
+    }
+
+    private void HandleTestcardInternal(int k, int weight, int height)
+    {
+        // calculate 3D position from card information
+        double xPoisiton = -0.5 + ((double)weight / 100);
+        double yPoisiton = (double)height / 200;
+
+        Vector3 dataPointNormalPosition = new Vector3((float)xPoisiton, (float)yPoisiton, 0);
+
+        Gender classifiedGender = Classify(k, weight, height);
+        GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
+        classifiedDataPoint = new DataPoint(weight, height, classifiedGender, dataPointGameObject);
+    }
 
     private GameObject CreateGameObjectForDataPoint(Vector3 dataPointNormalPosition, GameObject dataPointGameObject)
     {
@@ -95,9 +342,10 @@ public class PlotHolderScript : MonoBehaviour
         }
     }
 
-    // TODO: edge case: multiple neighbors in same distance?
-    // - There is no good way to handle this 
-    // Currently, the datapoint that was added first is considered when multiple points have the same distance
+    // Edge case: multiple neighbors in same distance?
+    // There is no good way to handle this. 
+    // Currently, the datapoint that was added first is considered when multiple points have the same distance.
+    // I think this is a fair way to handle this.
 
     private Gender Classify(int k, int weight, int height)
     {
@@ -121,22 +369,13 @@ public class PlotHolderScript : MonoBehaviour
         foreach (DataPoint dataPoint in dataPointsForClassification)
         {
             dataPoint.Distance = Mathf.Sqrt(Mathf.Pow((dataPoint.Weight - weight), 2) + (Mathf.Pow((dataPoint.Height - height), 2)));
-            Debug.Log("dataPoint.Distance = " + dataPoint.Distance);
         }
-
-        Debug.Log("dataPointsForClassification count = " + dataPointsForClassification.Count());
-
 
         // sort data points by distance
         List<DataPoint> dataPointsForClassificationSorted = dataPointsForClassification.OrderBy(o => o.Distance).ToList();
 
-        Debug.Log("dataPointsForClassificationSorted count = " + dataPointsForClassificationSorted.Count());
-
-
         // only consider k nearest data points
         List<DataPoint> dataPointsForClassificationSortedAndTrimmed = dataPointsForClassificationSorted.Take(k).ToList();
-
-        Debug.Log("dataPointsForClassificationSortedAndTrimmed count = " + dataPointsForClassificationSortedAndTrimmed.Count());
 
         // highlight datapoints that were used for classification
         foreach (DataPoint dataPoint in dataPointsForClassificationSortedAndTrimmed)
@@ -189,222 +428,5 @@ public class PlotHolderScript : MonoBehaviour
                 dataPoint.GameObject.GetComponent<MeshRenderer>().material = pinkMaterial;
             }
         }
-    }
-
-
-    // ---------------------------------- Handling QR Codes ----------------------------------
-    public void HandleQrCode(string qrCodeData)
-    {
-        // Homer Simpson - 90kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 1")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(1))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.4, (float)0.9, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(1, 90, 180, Gender.Male, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(1);
-            }
-        }
-
-        // Marge Simpson - 70kg - 1,70m
-        if (qrCodeData == "KNN Tutorial Card 2")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(2))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.85, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(2, 70, 170, Gender.Female, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(2);
-            }
-        }
-
-        // Rick Sanchez - 70kg - 1,90m
-        if (qrCodeData == "KNN Tutorial Card 3")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(3))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.95, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(3, 70, 190, Gender.Male, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(3);
-            }
-        }
-
-        // Summer Smith - 70kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 4")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(4))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.2, (float)0.9, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 70, 180, Gender.Female, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(4);
-            }
-        }
-
-        // Randy Marsh - 80kg - 1,70m
-        if (qrCodeData == "KNN Tutorial Card 5")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(5))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.85, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 80, 170, Gender.Male, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(5);
-            }
-        }
-
-        // Liane Cartman - 60kg - 1,50m
-        if (qrCodeData == "KNN Tutorial Card 6")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(6))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.75, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 60, 150, Gender.Female, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(6);
-            }
-        }
-
-        // Peter Griffin - 100kg - 1,80m
-        if (qrCodeData == "KNN Tutorial Card 7")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(7))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.5, (float)0.9, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, maleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 100, 180, Gender.Male, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(7);
-            }
-        }
-
-        // Lois Griffin - 65kg - 1,60m
-        if (qrCodeData == "KNN Tutorial Card 8")
-        {
-            if (!dataPointIdsAlreadyLoaded.Contains(8))
-            {
-                Vector3 dataPointNormalPosition = new Vector3((float)0.15, (float)0.8, 0);
-                GameObject dataPointGameObject = CreateGameObjectForDataPoint(dataPointNormalPosition, femaleDatapointObject);
-                dataPointsForClassification.Add(new DataPoint(4, 65, 160, Gender.Female, dataPointGameObject));
-                dataPointIdsAlreadyLoaded.Add(8);
-            }
-        }
-
-        // Test Card 1 - k=1 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 1")
-        {
-            Gender classifiedGender = Classify(1, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 1 - k=2 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 2")
-        {
-            Gender classifiedGender = Classify(2, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 1 - k=3 - 80kg - 1,80m
-        if (qrCodeData == "KNN Test Card 1 3")
-        {
-            Gender classifiedGender = Classify(3, 80, 180);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.3, (float)0.9, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 80, 180, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 2 - k=1 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 1")
-        {
-            Gender classifiedGender = Classify(1, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 2 - k=2 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 2")
-        {
-            Gender classifiedGender = Classify(2, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 2 - k=3 - 60kg - 1,60m
-        if (qrCodeData == "KNN Test Card 2 3")
-        {
-            Gender classifiedGender = Classify(3, 60, 160);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.1, (float)0.8, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 60, 160, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 3 - k=1 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 1")
-        {
-            Gender classifiedGender = Classify(1, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 3 - k=2 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 2")
-        {
-            Gender classifiedGender = Classify(2, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
-        }
-
-        // Test Card 3 - k=3 - 100kg - 2m
-        if (qrCodeData == "KNN Test Card 3 3")
-        {
-            Gender classifiedGender = Classify(3, 100, 200);
-            Vector3 dataPointNormalPosition = new Vector3((float)0.5, 1, 0);
-            GameObject dataPointGameObject = AddClassifiedDatapoint(classifiedGender, dataPointNormalPosition);
-            classifiedDataPoint = new DataPoint(1, 100, 200, classifiedGender, dataPointGameObject);
-        }
-
-        // Reset Card
-        if (qrCodeData == "KNN Reset")
-        {
-            foreach (DataPoint dataPoint in dataPointsForClassification)
-            {
-                Destroy(dataPoint.GameObject);
-            }
-            dataPointsForClassification.Clear();
-            dataPointIdsAlreadyLoaded.Clear();
-
-            if (classifiedDataPoint != null)
-            {
-                Destroy(classifiedDataPoint.GameObject);
-                classifiedDataPoint = null;
-            }
-        }
-    }
-
-    public void TestFunctionForButton()
-    {
-        //HandleQrCode("KNN Tutorial Card 1");
-        //HandleQrCode("KNN Tutorial Card 2");
-        //HandleQrCode("KNN Tutorial Card 3");
-        //HandleQrCode("KNN Tutorial Card 4");
-
-        //HandleQrCode("KNN Test Card 1 2");
-
-    }
-
-
-    public void TestFunctionForButton2()
-    {
-
-        //HandleQrCode("KNN Test Card 2 3");
     }
 }
