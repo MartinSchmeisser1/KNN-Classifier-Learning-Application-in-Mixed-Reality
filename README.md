@@ -33,7 +33,13 @@ The tool is a learning application for whoever is interested in learning the bas
 
 A K-Nearest-Neighbor Model (the simplest Machine Learning Model) can be trained and tested, while both processes are visualized.
 
+### Demonstration Pictures
 
+![Picture 1](/Readme_Pictures/Picture1.png)
+![Picture 2](/Readme_Pictures/Picture2.png)
+![Picture 3](/Readme_Pictures/Picture3.png)
+![Picture 4](/Readme_Pictures/Picture4.png)
+![Picture 5](/Readme_Pictures/Picture5.png)
  
             
 ### Known Problems
