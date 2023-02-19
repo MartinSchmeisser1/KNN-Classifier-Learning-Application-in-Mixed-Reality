@@ -13,6 +13,8 @@ weight and hairvolume of the test card and the learned training examples.
 
 If you want to reset the cards you already scanned, just scan the Reset Card.
 
+The plot can be scaled or moved around in the room with using the grab gesture with two hands.
+
 Note that on the 2D version, the attribute hairvolume is missing.  
 
 ### Precondition
