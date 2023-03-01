@@ -110,9 +110,9 @@ namespace QRTracking
                     if (action.type == ActionData.Type.Added)
                     {
 
-                        GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                        qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                        qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                        //GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                        //qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                        //qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
 
                         if (action.qrCode.LastDetectedTime.AddSeconds(1).UtcDateTime > System.DateTimeOffset.Now.UtcDateTime)
                         {
@@ -121,16 +121,16 @@ namespace QRTracking
                         }
 
 
-                        qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                        //qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
                     }
                     else if (action.type == ActionData.Type.Updated)
                     {
                         if (!qrCodesObjectsList.ContainsKey(action.qrCode.Id))
                         {
-                            GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                            qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
-                            qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
-                            qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
+                            //GameObject qrCodeObject = Instantiate(qrCodePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                            //qrCodeObject.GetComponent<SpatialGraphNodeTracker>().Id = action.qrCode.SpatialGraphNodeId;
+                            //qrCodeObject.GetComponent<QRCode>().qrCode = action.qrCode;
+                            //qrCodesObjectsList.Add(action.qrCode.Id, qrCodeObject);
                          }
                         if (action.qrCode.LastDetectedTime.AddSeconds(1).UtcDateTime > System.DateTimeOffset.Now.UtcDateTime)
                         {
