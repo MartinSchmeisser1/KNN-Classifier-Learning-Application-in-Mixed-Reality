@@ -42,16 +42,6 @@ A K-Nearest-Neighbor Model (the simplest Machine Learning Model) can be trained 
 ![Picture 5](/Readme_Pictures/Picture5.png)
  
             
-### Known Problems
-
-After scanning a QR code, a hologram of the QR code outlines is flying around in the room at the place where the QR code was scanned. 
-This is a disturbing behaviour, but sadly there is no way to deal with this.
-The only way to delete these holograms is to restart the HoloLens. 
-
-[Further information](https://github.com/chgatla-microsoft/QRTracking/issues/41#issuecomment-921562061)
-
-[Microsoft documentation](https://learn.microsoft.com/en-us/windows/mixed-reality/develop/advanced-concepts/qr-code-tracking-overview#managing-qr-code-data)
-
 ## Installation and Deployment
 ### Preconditions
 
